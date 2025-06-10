@@ -2,11 +2,11 @@ def call(String imageName, String environment, String branch, String repoUrl, St
     // Predefined common environment credential mappings per envVarRepo
     def commonEnvVarSets = [
         private: [
-            SENDGRID_KEY: 'SENDGRID_KEY_DEV',
-            MONGO_CONNECTION_STRING: 'MONGO_CONNECTION_STRING_DEV',
-            BIFROST_ACCOUNT_PROFILE_API: 'BIFROST_ACCOUNT_PROFILE_API_DEV',
-            ODIN_SECRET: 'ODIN_SECRET_DEV',
-            ODIN_HOST: 'ODIN_HOST_DEV'
+            SENDGRID_KEY: 'SENDGRID_KEY',
+            MONGO_CONNECTION_STRING: 'MONGO_CONNECTION_STRING',
+            BIFROST_ACCOUNT_PROFILE_API: 'BIFROST_ACCOUNT_PROFILE_API',
+            ODIN_SECRET: 'ODIN_SECRET',
+            ODIN_HOST: 'ODIN_HOST'
         ],
         public: [
             SENDGRID_KEY: 'SENDGRID_KEY_PUBLIC',
