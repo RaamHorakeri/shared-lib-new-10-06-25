@@ -13,7 +13,7 @@ def call(String imageName, String environment, String branch, String repoUrl, St
             BIFROST_ACCOUNT_PROFILE_API: 'BIFROST_ACCOUNT_PROFILE_API_PUBLIC',
             ODIN_SECRET: 'ODIN_SECRET_PUBLIC',
             ODIN_HOST: 'ODIN_HOST_PUBLIC'
-        ]
+        ],
         private: [:]
         // Add more sets here if needed
     ]
