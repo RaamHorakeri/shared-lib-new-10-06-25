@@ -1,5 +1,5 @@
 def call(String imageName, String environment, String branch, String repoUrl, String credentialsId, String envVarRepo) {
-    // Predefined common environment credential mappings per envVarRepo
+    // Case-insensitive environment mapping with empty private
     def commonEnvVarSets = [
         payment: [
             MONGO_CONNECTION_STRING: 'MONGO_CONNECTION_STRING',
@@ -7,22 +7,20 @@ def call(String imageName, String environment, String branch, String repoUrl, St
             ODIN_SECRET: 'ODIN_SECRET',
             ODIN_HOST: 'ODIN_HOST'
         ],
-        public: [
-            SENDGRID_KEY: 'SENDGRID_KEY_PUBLIC',
-            MONGO_CONNECTION_STRING: 'MONGO_CONNECTION_STRING_PUBLIC',
-            BIFROST_ACCOUNT_PROFILE_API: 'BIFROST_ACCOUNT_PROFILE_API_PUBLIC',
-            ODIN_SECRET: 'ODIN_SECRET_PUBLIC',
-            ODIN_HOST: 'ODIN_HOST_PUBLIC'
-        ],
-        private: [:]
-        // Add more sets here if needed
+        public: [:],
+        private: [:]  // Explicit empty map
     ]
 
-    def envVars = commonEnvVarSets.get(envVarRepo)
+    // Normalize input and find matching key (case-insensitive)
+    def normalizedInput = envVarRepo?.trim()?.toLowerCase()
+    def matchedKey = commonEnvVarSets.keySet().find { it.toLowerCase() == normalizedInput }
 
-    if (!envVars) {
-        error("Invalid envVarRepo: ${envVarRepo}. Valid options: ${commonEnvVarSets.keySet().join(', ')}")
+    if (!matchedKey) {
+        error("Invalid envVarRepo: '${envVarRepo}'. Valid options: ${commonEnvVarSets.keySet().join(', ')}")
     }
+
+    // Will return empty map for 'private'
+    def envVars = commonEnvVarSets[matchedKey] ?: [:]
 
     return [
         services: [
@@ -33,7 +31,7 @@ def call(String imageName, String environment, String branch, String repoUrl, St
                         repoUrl: repoUrl,
                         branch: branch,
                         credentialsId: credentialsId,
-                        envVars: envVars
+                        envVars: envVars  // Empty for private
                     ]
                 ]
             ]
